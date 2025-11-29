@@ -10,6 +10,8 @@ public class Main {
         AudioRecorder recorder = new AudioRecorder();
         Scanner scanner = new Scanner(System.in);
         File tempFile = null;
+        AudioPlayer player = new AudioPlayer();
+
 
         boolean running = true;
 
@@ -17,7 +19,9 @@ public class Main {
             System.out.println("\n ===REPORTOPHONE===");
             System.out.println("1. Start Recording");
             System.out.println("2. Stop Recording");
-            System.out.println("3. Exit Program");
+            System.out.println("3. Play Audio File");
+            System.out.println("4. Stop Audio Playback");
+            System.out.println("5. Exit Program");
 
             String input = scanner.nextLine();
 
@@ -34,7 +38,6 @@ public class Main {
                     if (tempFile != null) {
                         recorder.stopRecording();
 
-                        // Ask user what to do with recording
                         System.out.println("Do you want to save the recording? (y/n)");
                         String choice = scanner.nextLine();
                         if (choice.equalsIgnoreCase("y")) {
@@ -65,6 +68,21 @@ public class Main {
                     break;
 
                 case "3":
+                    System.out.println("Enter a filename: ");
+                    String filenameToPlay = scanner.nextLine();
+
+                    try {
+                        player.startPlayback(filenameToPlay + ".wav");
+                    } catch (Exception e) {
+                        System.err.println(e.getMessage());
+                    }
+                    break;
+
+                case "4":
+                    player.stopPlayback();
+                    break;
+
+                case "5":
                     if (tempFile != null) {
                         recorder.stopRecording();
                         tempFile.delete();
