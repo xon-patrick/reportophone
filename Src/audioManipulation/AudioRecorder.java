@@ -1,3 +1,5 @@
+package audioManipulation;
+
 import javax.sound.sampled.*;
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -9,6 +11,8 @@ public class AudioRecorder {
     private AudioFileFormat.Type targetType = AudioFileFormat.Type.WAVE;
     private AudioFormat format;
     private File tempFile;
+
+    private boolean paused = false;
 
     public AudioRecorder() {
         // 44.1kHz, 16-bit, mono, signed, little-endian
@@ -29,6 +33,8 @@ public class AudioRecorder {
 //        File outFile = new File("recording_" + timestamp + ".wav");
 
         // pentru optiunea de salvare/stergere
+        File folder = new File("audiofiles");
+        if (!folder.exists()) folder.mkdir();
         tempFile = new File("tempRec.wav");
 
         recordingThread = new Thread(() -> {
@@ -63,6 +69,22 @@ public class AudioRecorder {
         }
 
         System.out.println("Recording stopped.");
+    }
+
+    public void pauseRecording() {
+        if (line != null && line.isRunning()) {
+            line.stop();
+            paused = true;
+            System.out.println("Recording paused.");
+        }
+    }
+
+    public void resumeRecording() {
+        if (line != null && paused) {
+            line.start();
+            paused = false;
+            System.out.println("Recording resumed.");
+        }
     }
 
     public File getTempFile() {

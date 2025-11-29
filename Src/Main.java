@@ -1,3 +1,4 @@
+import audioManipulation.*;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -38,15 +39,18 @@ public class Main {
                     if (tempFile != null) {
                         recorder.stopRecording();
 
+                        File folder = new File("audiofiles");
+                        if (!folder.exists()) folder.mkdir();
+
                         System.out.println("Do you want to save the recording? (y/n)");
                         String choice = scanner.nextLine();
                         if (choice.equalsIgnoreCase("y")) {
-                            System.out.print("Enter a filename (without extension): ");
+                            System.out.print("Enter a filename: ");
                             String filename = scanner.nextLine().trim();
                             if (filename.isEmpty()) {
                                 filename = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss").format(new Date());
                             }
-                            File savedFile = new File(filename + ".wav");
+                            File savedFile = new File(folder, filename + ".wav");
                             if (tempFile.renameTo(savedFile)) {
                                 System.out.println("Recording saved as: " + savedFile.getAbsolutePath());
                             } else {
@@ -70,9 +74,10 @@ public class Main {
                 case "3":
                     System.out.println("Enter a filename: ");
                     String filenameToPlay = scanner.nextLine();
+                    File fileToPlay = new File("audiofiles", filenameToPlay + ".wav");
 
                     try {
-                        player.startPlayback(filenameToPlay + ".wav");
+                        player.startPlayback(fileToPlay.getAbsolutePath());
                     } catch (Exception e) {
                         System.err.println(e.getMessage());
                     }

@@ -1,3 +1,5 @@
+package audioManipulation;
+
 import javax.sound.sampled.*;
 import java.io.*;
 import java.io.IOException;
@@ -26,6 +28,20 @@ public class AudioPlayer {
             audioClip.stop();
             audioClip.close();
             System.out.println("stopped playback");
+        }
+    }
+
+    public void pausePlayback() {
+        if (audioClip != null && audioClip.isRunning()) {
+            audioClip.stop();
+            System.out.println("Playback paused.");
+        }
+    }
+
+    public void resumePlayback() {
+        if (audioClip != null && !audioClip.isRunning()) {
+            audioClip.start();
+            System.out.println("Playback resumed.");
         }
     }
 }
